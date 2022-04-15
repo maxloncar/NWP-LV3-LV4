@@ -10,6 +10,7 @@
                     <form action="{{ url('projects/' .$projects->id) }}" method="post">
                         {!! csrf_field() !!}
                         @method("PATCH")
+                        @if($projects['voditelj_id'] == auth()->user()->id)
                         <label>Naziv projekta</label>
                         <input type="text" name="naziv_projekta" id="naziv_projekta"
                             value="{{$projects->naziv_projekta}}" class="form-control mb-3">
@@ -19,15 +20,18 @@
                         <label>Cijena projekta</label>
                         <input type="text" name="cijena_projekta" id="cijena_projekta"
                             value="{{$projects->cijena_projekta}}" class="form-control mb-3">
+                        @endif
                         <label>Obavljeni poslovi</label>
                         <input type="text" name="obavljeni_poslovi" id="obavljeni_poslovi"
                             value="{{$projects->obavljeni_poslovi}}" class="form-control mb-3">
+                        @if($projects['voditelj_id'] == auth()->user()->id)
                         <label>Datum početka</label>
                         <input type="date" name="datum_pocetka" id="datum_pocetka" value="{{$projects->datum_pocetka}}"
                             class="form-control mb-3">
                         <label>Datum završetka</label>
                         <input type="date" name="datum_zavrsetka" id="datum_zavrsetka"
                             value="{{$projects->datum_zavrsetka}}" class="form-control mb-3">
+                        @endif
                         <input type="submit" value="Uredi" class="btn btn-primary btn-block mb-3">
                     </form>
 

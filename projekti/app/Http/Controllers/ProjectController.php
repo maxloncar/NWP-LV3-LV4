@@ -82,17 +82,8 @@ class ProjectController extends Controller
     //ažuriranje projekta
     public function update(Request $request, $id) {
         $project = Project::find($id);
-        $userID = auth()->user()->id;
         $input = $request->all();
-        $input_obavljeni_poslovi = array(['obavljeni_poslovi']);
-        //ako je korisnik voditelj projekta, tada ima mogućnost izmjene svih podataka
-        //ako je korisnik samo član, pohranjuje se izmjena samo za obavljene poslove
-       if ($userID != $project['voditelj_id']) {
-            $input_obavljeni_poslovi['obavljeni_poslovi'] = $input['obavljeni_poslovi'];
-            $project->update($input_obavljeni_poslovi);
-       } else {
-            $project->update($input);
-       }
+        $project->update($input);
        //preusmjeravanje na rutu projects nakon pohrane izmjena
         return redirect('projects')->with('flash_message', 'Projekt je uspješno ažuriran!'); 
     }
