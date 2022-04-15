@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Project_User;
 
-class Project extends Model
-{
+class Project extends Model {
+    //klasa Project s nazivom tablice, primarnim ključem i atributima
     protected $table = 'projects';
     protected $primaryKey = 'id';
     protected $fillable = ['naziv_projekta', 'opis_projekta', 'cijena_projekta', 'obavljeni_poslovi', 'datum_pocetka', 'datum_zavrsetka', 'voditelj_id'];

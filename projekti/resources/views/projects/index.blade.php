@@ -6,8 +6,8 @@
             <div class="card">
                 <h2 class="card-header d-flex justify-content-center">Popis projekata</h2>
                 <div class="card-body">
-                    <a href="{{ url('/projects/create') }}" class="btn btn-primary btn-sm mb-4" title="Add New Project">
-                        <i class="fa fa-plus" aria-hidden="true"></i> Dodaj novi projekt
+                    <a href="{{ url('/projects/create') }}" class="btn btn-primary btn-sm mb-4"
+                        title="Dodaj novi projekt"> Dodaj novi projekt
                     </a>
                     <div class="table-responsive">
                         <h4>Projekti na kojima je korisnik voditelj:</h4>
@@ -36,9 +36,8 @@
                                     <td>{{ $project->datum_zavrsetka }}</td>
                                     <td>
                                         <a href="{{ url('/projects/' . $project->id . '/edit') }}"
-                                            title="Edit Project"><button class="btn btn-primary btn-sm"><i
-                                                    class="fa fa-pencil-square-o"
-                                                    aria-hidden="true"></i>Uredi</button></a>
+                                            title="Uredi projekt"><button
+                                                class="btn btn-primary btn-sm">Uredi</button></a>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -75,9 +74,8 @@
                                     <td>{{ $member->datum_zavrsetka }}</td>
                                     <td>
                                         <a href="{{ url('/projects/' . $member->id . '/edit') }}"
-                                            title="Edit Project"><button class="btn btn-primary btn-sm"><i
-                                                    class="fa fa-pencil-square-o"
-                                                    aria-hidden="true"></i>Uredi</button></a>
+                                            title="Uredi projekt"><button
+                                                class="btn btn-primary btn-sm">Uredi</button></a>
                                     </td>
                                 </tr>
                                 @endforeach

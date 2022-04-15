@@ -15,7 +15,8 @@ class AuthController extends Controller {
      *
      * @return response()
      */
-    public function index() {
+    //funkcija za prijavu korisnika
+    public function login() {
         return view('auth.login');
     }  
       
@@ -24,6 +25,7 @@ class AuthController extends Controller {
      *
      * @return response()
      */
+    //funkcija za registraciju korisnika
     public function registration() {
         return view('auth.registration');
     }
@@ -33,6 +35,7 @@ class AuthController extends Controller {
      *
      * @return response()
      */
+    //provjera je li korisnik unjeo prave kredencijale pri prijavi
     public function postLogin(Request $request) {
         $request->validate([
             'email' => 'required',
@@ -41,7 +44,7 @@ class AuthController extends Controller {
    
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('projects')->withSuccess('Uspjesno ste se prijavili u sustav!');
+            return redirect()->intended('projects')->withSuccess('Uspješno ste se prijavili u sustav!');
         }
   
         return redirect("login")->withSuccess('Unijeli ste krive kredencijale.');
@@ -52,6 +55,7 @@ class AuthController extends Controller {
      *
      * @return response()
      */
+    //privjera je li korisnik unjeo e-mail koji se ne koristi te je li zaporka dovoljna jaka
     public function postRegistration(Request $request) {  
         $request->validate([
             'name' => 'required',
@@ -64,7 +68,7 @@ class AuthController extends Controller {
 
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('projects')->withSuccess('Uspjesno ste se registrirali u sustav!');
+            return redirect()->intended('projects')->withSuccess('Uspješno ste se registrirali u sustav!');
         }
          
     }
@@ -74,11 +78,11 @@ class AuthController extends Controller {
      *
      * @return response()
      */
+    //preusmjeravanje korisnika na rutu projects
     public function projects() {
         if(Auth::check()){
             return view('projects');
         }
-  
         return redirect("login")->withSuccess('Nemate pristup sustavu!');
     }
     
@@ -87,6 +91,7 @@ class AuthController extends Controller {
      *
      * @return response()
      */
+    //kreiranje korisnika (ime, e-mail i hashirana zaporka)
     public function create(array $data) {
       return User::create([
         'name' => $data['name'],
@@ -100,6 +105,7 @@ class AuthController extends Controller {
      *
      * @return response()
      */
+    //odjava korisnika i preusmjeravanje na login rutu
     public function logout() {
         Session::flush();
         Auth::logout();

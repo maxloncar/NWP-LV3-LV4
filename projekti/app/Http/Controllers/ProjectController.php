@@ -15,14 +15,15 @@ class ProjectController extends Controller
      */
     public function index() {
         $userID = auth()->user()->id;
-        $projects = Project::where('voditelj_id',$userID)->get();
-        $projects_ids_member = Project_Users::whereJsonContains('team_members_id', strval($userID))->get();
-
+        //dohvaćanje projekata u kojima je korisnik voditelj
+        $projects = Project::where('voditelj_id', $userID)->get();
+        //dohvaćanje id-ova od korisnika koji su članovi
+        $projects_member_id = Project_Users::whereJsonContains('team_members_id', strval($userID))->get();
+        //spremanje članova u polje $projects_member
         $projects_member = array();
-        foreach ($projects_ids_member as $id) {
+        foreach ($projects_member_id as $id) {
             $projects_member[] = Project::find($id->project_id);
         }
-
         return view ('projects.index')->with('projects', $projects)->with('projects_member', $projects_member);
     }
 
@@ -31,6 +32,8 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     //kreiranje novih članova koji ne postoje u bazi podataka
     public function create() {
         $users = User::where('id', '!=' ,auth()->user()->id)->get();
         return view('projects.create')->with('users', $users);
@@ -42,13 +45,14 @@ class ProjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    //pohrana projekta
     public function store(Request $request) {
         $input = $request->all();
         $input['voditelj_id'] = auth()->user()->id;
         $project = Project::create($input);
        
         $project_users = new Project_Users();
-        //setting and saving project and id's of team members
+        //postavljanje i spremanje projekta i id-a njegovih članova
         $project_users->team_members_id = $request->team_members;
         $project_users->project_id = $project->id;
         $project_users->save();
@@ -62,6 +66,7 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    //uređivanje projekta pomoću njegovog id-a
     public function edit($id) {
         $project = Project::find($id);
         return view('projects.edit')->with('projects', $project);
@@ -74,19 +79,21 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    //ažuriranje projekta
     public function update(Request $request, $id) {
         $project = Project::find($id);
         $userID = auth()->user()->id;
         $input = $request->all();
-        $input_db = array(['obavljeni_poslovi']);
-
+        $input_obavljeni_poslovi = array(['obavljeni_poslovi']);
+        //ako je korisnik voditelj projekta, tada ima mogućnost izmjene svih podataka
+        //ako je korisnik samo član, pohranjuje se izmjena samo za obavljene poslove
        if ($userID != $project['voditelj_id']) {
-            $input_db['obavljeni_poslovi'] = $input['obavljeni_poslovi'];
-            $project->update($input_db);
+            $input_obavljeni_poslovi['obavljeni_poslovi'] = $input['obavljeni_poslovi'];
+            $project->update($input_obavljeni_poslovi);
        } else {
             $project->update($input);
        }
-
+       //preusmjeravanje na rutu projects nakon pohrane izmjena
         return redirect('projects')->with('flash_message', 'Projekt je uspješno ažuriran!'); 
     }
 
@@ -96,6 +103,7 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    //brisanje projekta (nije implementirano)
     public function destroy($id) {
         Project::destroy($id);
         return redirect('projects')->with('flash_message', 'Projekt je uspješno obrisan!');  
