@@ -16,7 +16,7 @@ use App\Http\Controllers\ProjectController;
 */
 
 Route::get('/', function () {
-    return view('layout');
+    return view('auth.login');
 });
 //login ruta
 Route::get('login', [AuthController::class, 'login'])->name('login');
